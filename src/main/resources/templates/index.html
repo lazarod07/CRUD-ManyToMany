@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<div class="container">
+		<div class="row">
+			<a th:href="@{/restaurante/lista}" th:text="Restaurantes"
+				class="btn btn-primary col-sm-2" role="button"
+				data-bs-toggle="button"></a>
+		</div>
+		<div class="row">
+			<a th:href="@{/menu/lista}" th:text="Menús"
+				class="btn btn-primary col-sm-2" role="button"
+				data-bs-toggle="button"></a>
+		</div>
+	</div>
+</body>
+</html>

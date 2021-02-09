@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="javascript:history.back()"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<form th:action="@{/restaurante/agregar}" method="post"
+			th:object="${restaurante}">
+			<div class="form-group row">
+				<label for="razonSocial" class="col-form-label col-sm-2">Razón social</label>
+				<div class="col-sm-4">
+					<input type="text" id="razonSocial" th:field="*{razonSocial}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('razonSocial')}"
+					th:errors="*{razonSocial}" class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="nombreComercial" class="col-form-label col-sm-2">Nombre
+					Comercial</label>
+				<div class="col-sm-4">
+					<input type="text" id="nombreComercial"
+						th:field="*{nombreComercial}" class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('nombreComercial')}"
+					th:errors="*{nombreComercial}" class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<fieldset class="row mb-3 form-group">
+				<legend class="col-form-label col-sm-2 pt-0">Tipo De
+					Restaurante</legend>
+				<div class="col-sm-4">
+					<div class="col-sm-10 form-group row">
+						<div class="form-check">
+							<input type="radio" id="tipoDeRestaurante1"
+								th:field="*{tipoDeRestaurante}" value="1"
+								class="form-check-input"> <label
+								for="tipoDeRestaurante1" class="form-check-label">Vegano</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipoDeRestaurante2"
+								th:field="*{tipoDeRestaurante}" value="2"
+								class="form-check-input"> <label
+								for="tipoDeRestaurante2" class="form-check-label">Vegetariano</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipoDeRestaurante3"
+								th:field="*{tipoDeRestaurante}" value="3"
+								class="form-check-input"> <label
+								for="tipoDeRestaurante3" class="form-check-label">Carnes
+								Rojas y Aves</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipoDeRestaurante4"
+								th:field="*{tipoDeRestaurante}" value="4"
+								class="form-check-input"> <label
+								for="tipoDeRestaurante4" class="form-check-label">Pescados-Mariscos</label>
+						</div>
+					</div>
+				</div>
+				<div th:if="${#fields.hasErrors('tipoDeRestaurante')}"
+					th:errors="*{tipoDeRestaurante}"
+					class="alert alert-danger col-sm-5"></div>
+
+			</fieldset>
+			<br>
+			<div class="form-group row">
+				<label for="ciudadDeUbicacion" class="col-form-label col-sm-2">Ciudad de ubicación</label>
+				<div class="col-sm-4">
+					<input type="text" id="ciudadDeUbicacion"
+						th:field="*{ciudadDeUbicacion}" class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('ciudadDeUbicacion')}"
+					th:errors="*{ciudadDeUbicacion}"
+					class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="horaApertura" class="col-form-label col-sm-2">Hora
+					Apertura</label>
+				<div class="col-sm-4">
+					<input type="text" id="horaApertura" th:field="*{horaApertura}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('horaApertura')}"
+					th:errors="*{horaApertura}" class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="horaCierre" class="col-form-label col-sm-2">Hora
+					Cierre</label>
+				<div class="col-sm-4">
+					<input type="text" id="horaCierre" th:field="*{horaCierre}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('horaCierre')}"
+					th:errors="*{horaCierre}" class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div>
+				<div>
+					<input type="submit" value="Agregar" class="btn btn-primary">
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+body {
+	background: #2e2e2e;
+}
+
+.alert {
+	padding: 0.4rem;
+}
+
+h3 {
+	padding: 1rem;
+	color: white;
+	text-align: center;
+}
+
+h4 {
+	text-align: center;
+}
+
+.container {
+	padding: 1rem;
+	background: #9db3e3;
+	border-radius: 0.5rem;
+}
+
+a {
+	margin: 1rem;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="/index"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Razón social</th>
+						<th>Nombre comercial</th>
+						<th>Tipo de restaurante</th>
+						<th>Ciudad de ubicación</th>
+						<th>Hora de apertura</th>
+						<th>Hora de cierre</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+						<th>Ver menús</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="restaurante: ${restaurantes}">
+						<td th:text="${restaurante.razonSocial}"></td>
+						<td th:text="${restaurante.nombreComercial}"></td>
+						<td th:text="${restaurante.tipoDeRestaurante}"></td>
+						<td th:text="${restaurante.ciudadDeUbicacion}"></td>
+						<td th:text="${restaurante.horaApertura}"></td>
+						<td th:text="${restaurante.horaCierre}"></td>
+						<td><a th:href="@{/restaurante/editar/} + ${restaurante.id}"
+							th:text="Editar"></a></td>
+						<td><a
+							th:href="@{/restaurante/eliminar/} + ${restaurante.id}"
+							th:text="Eliminar"></a></td>
+						<td><a
+							th:href="@{/restaurante/} + ${restaurante.id} + '/listamenus/'"
+							th:text="'Ver'+' '+ 'menús'"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br> <a th:href="@{/restaurante/agregar}"
+			th:text="Agregar + ' ' + restaurante" class="btn btn-primary"
+			role="button" data-bs-toggle="button"></a>
+	</div>
+</body>
+</html>

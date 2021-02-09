@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="javascript:history.back()"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Nombre</th>
+						<th>Calorías</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="ingrediente: ${ingredientes}">
+						<td th:text="${ingrediente.nombre}"></td>
+						<td th:text="${ingrediente.calorias}"></td>
+						<td><a
+							th:href="@{/menu/} + ${menuId} + '/editaringrediente/' + ${ingrediente.id}">Editar</a></td>
+						<td><a
+							th:href="@{/menu/} + ${menuId} + '/eliminaringrediente/' + ${ingrediente.id}">Eliminar</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br> <a th:href="@{/menu/} + ${menuId} + '/agregaringrediente/'"
+			class="btn btn-primary" role="button" data-bs-toggle="button">Agregar
+			ingrediente</a>
+	</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="javascript:history.back()"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<form th:action="@{/menu/} + ${menuId} + '/agregaringrediente'"
+			method="post" th:object="${ingrediente}">
+			<div class="form-group row">
+				<label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+				<div class="col-sm-4">
+					<input type="text" id="nombre" th:field="*{nombre}">
+				</div>
+				<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+					class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="precio" class="col-form-label col-sm-2">Calorías</label>
+				<div class="col-sm-3">
+					<input type="number" id="calorias" th:field="*{calorias}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('calorias')}"
+					th:errors="*{calorias}" class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div>
+				<div>
+					<input type="submit" value="Crear" class="btn btn-primary">
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

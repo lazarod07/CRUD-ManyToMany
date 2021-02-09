@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="/index"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<h4 th:text="'Menús tipo 1'"></h4>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Tipo</th>
+						<th>Nombre</th>
+						<th>Precio</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+						<th>Ver ingredientes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="menu: ${tipo1}">
+						<td th:text="${menu.tipo}"></td>
+						<td th:text="${menu.nombre}"></td>
+						<td th:text="${menu.precio}"></td>
+						<td><a th:href="@{/menu/editar/} + ${menu.id}">Editar</a></td>
+						<td><a th:href="@{/menu/eliminar/} + ${menu.id}">Eliminar</a></td>
+						<td><a
+							th:href="@{/menu/}+ ${menu.id} + '/listaingredientes/'">Ver
+								ingredientes</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<h4 th:text="'Menús tipo 2'"></h4>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Tipo</th>
+						<th>Nombre</th>
+						<th>Precio</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+						<th>Ver ingredientes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="menu: ${tipo2}">
+						<td th:text="${menu.tipo}"></td>
+						<td th:text="${menu.nombre}"></td>
+						<td th:text="${menu.precio}"></td>
+						<td><a th:href="@{/menu/editar/} + ${menu.id}">Editar</a></td>
+						<td><a th:href="@{/menu/eliminar/} + ${menu.id}">Eliminar</a></td>
+						<td><a
+							th:href="@{/menu/}+ ${menu.id} + '/listaingredientes/'">Ver
+								ingredientes</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<h4 th:text="'Menús tipo 3'"></h4>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Tipo</th>
+						<th>Nombre</th>
+						<th>Precio</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+						<th>Ver ingredientes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="menu: ${tipo3}">
+						<td th:text="${menu.tipo}"></td>
+						<td th:text="${menu.nombre}"></td>
+						<td th:text="${menu.precio}"></td>
+						<td><a th:href="@{/menu/editar/} + ${menu.id}">Editar</a></td>
+						<td><a th:href="@{/menu/eliminar/} + ${menu.id}">Eliminar</a></td>
+						<td><a
+							th:href="@{/menu/}+ ${menu.id} + '/listaingredientes/'">Ver
+								ingredientes</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<h4 th:text="'Menús tipo 4'"></h4>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead class="table-primary">
+					<tr>
+						<th>Tipo</th>
+						<th>Nombre</th>
+						<th>Precio</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+						<th>Ver ingredientes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="menu: ${tipo4}">
+						<td th:text="${menu.tipo}"></td>
+						<td th:text="${menu.nombre}"></td>
+						<td th:text="${menu.precio}"></td>
+						<td><a th:href="@{/menu/editar/} + ${menu.id}">Editar</a></td>
+						<td><a th:href="@{/menu/eliminar/} + ${menu.id}">Eliminar</a></td>
+						<td><a
+							th:href="@{/menu/}+ ${menu.id} + '/listaingredientes/'">Ver
+								ingredientes</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br> <a th:href="@{/menu/agregar}" class="btn btn-primary col-sm-2" role="button"
+			data-bs-toggle="button">Agregar menu</a>
+	</div>
+</body>
+</html>

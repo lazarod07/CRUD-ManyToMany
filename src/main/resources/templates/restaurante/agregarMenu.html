@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<h3 th:text="${titulo}"></h3>
+	<a href="javascript:history.back()"
+		th:text="Atras" class="btn btn-secondary"
+		role="button" data-bs-toggle="button"></a>
+	<div class="container">
+		<form
+			th:action="@{/restaurante/} + ${restauranteId} + '/agregarmenu/'"
+			method="post" th:object="${menu}">
+			<fieldset class="row mb-3 form-group">
+				<legend class="col-form-label col-sm-2 pt-0">Tipo De Menú</legend>
+				<div class="col-sm-4">
+					<div class="col-sm-10 form-group">
+						<div class="form-check">
+							<input type="radio" id="tipo1" th:field="*{tipo}" value="1"
+								class="form-check-input"> <label for="tipo1"
+								class="form-check-label">Entrada</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipo2" th:field="*{tipo}" value="2"
+								class="form-check-input"> <label for="tipo2"
+								class="form-check-label">Plato Fuerte</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipo3" th:field="*{tipo}" value="3"
+								class="form-check-input"> <label for="tipo3"
+								class="form-check-label">Postres</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="tipo4" th:field="*{tipo}" value="4"
+								class="form-check-input"> <label for="tipo4"
+								class="form-check-label">Bebidas</label>
+						</div>
+					</div>
+				</div>
+				<div th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"
+					class="alert alert-danger col-sm-5"></div>
+			</fieldset>
+			<br>
+			<div class="form-group row">
+				<label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+				<div class="col-sm-4">
+					<input type="text" id="nombre" th:field="*{nombre}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+					class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="precio" class="col-form-label col-sm-2">Precio</label>
+				<div class="col-sm-4">
+					<input type="number" step="0.0001" id="precio" th:field="*{precio}"
+						class="form-control">
+				</div>
+				<div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
+					class="alert alert-danger col-sm-5"></div>
+			</div>
+			<br>
+			<div>
+				<div>
+					<input type="submit" value="Crear" class="btn btn-primary">
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
