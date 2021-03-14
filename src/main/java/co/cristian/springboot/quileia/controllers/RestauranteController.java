@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import co.cristian.springboot.quileia.models.dao.MenuDAO;
-import co.cristian.springboot.quileia.models.dao.RestauranteDAO;
 import co.cristian.springboot.quileia.models.entity.Menu;
 import co.cristian.springboot.quileia.models.entity.Restaurante;
+import co.cristian.springboot.quileia.models.services.IServiceDb;
 
 @Controller
 @SessionAttributes({"restaurante", "menu"})
@@ -26,17 +25,12 @@ import co.cristian.springboot.quileia.models.entity.Restaurante;
 public class RestauranteController {
 	
 	@Autowired
-	private RestauranteDAO restauranteDAO;
-	
-	@Autowired
-	private MenuDAO menuDAO;
+	private IServiceDb serviceDb;
 	
 	@GetMapping("/lista")
 	public String lista(Model model) {
 		
-		List<Restaurante> restaurantes = restauranteDAO.findAll();
-		
-		model.addAttribute("restaurantes", restaurantes);
+		model.addAttribute("restaurantes", serviceDb.findAllRestaurantes());
 		
 		model.addAttribute("titulo","Lista de restaurantes");
 		
@@ -47,9 +41,7 @@ public class RestauranteController {
 	@GetMapping("/agregar")
 	public String agregar(Model model) {
 		
-		Restaurante restaurante = new Restaurante();
-		
-		model.addAttribute("restaurante", restaurante);
+		model.addAttribute("restaurante", new Restaurante());
 		
 		model.addAttribute("titulo","Agregar restaurante");
 		
@@ -68,7 +60,7 @@ public class RestauranteController {
 			
 		}
 		
-		restauranteDAO.save(restaurante);
+		serviceDb.saveRestaurante(restaurante);
 		
 		model.addAttribute("titulo","Resultado");
 		
@@ -78,10 +70,8 @@ public class RestauranteController {
 	
 	@GetMapping("/editar/{id}")
 	public String editar(@PathVariable Integer id, Model model) {
-		
-		Restaurante restaurante = restauranteDAO.findById(id).get();
-		
-		model.addAttribute("restaurante", restaurante) ;
+
+		model.addAttribute("restaurante", serviceDb.findByIdRestaurante(id)) ;
 		
 		model.addAttribute("titulo","Editar restaurante");
 		
@@ -100,7 +90,7 @@ public class RestauranteController {
 			
 		}
 		
-		restauranteDAO.save(restaurante);
+		serviceDb.saveRestaurante(restaurante);
 		
 		status.setComplete();
 		
@@ -111,9 +101,7 @@ public class RestauranteController {
 	@GetMapping("/eliminar/{id}")
 	public String eliminar(@PathVariable Integer id ,Model model) {
 		
-		Restaurante restaurante = restauranteDAO.findById(id).get();
-		
-		restauranteDAO.delete(restaurante);
+		serviceDb.deleteRestaurante(serviceDb.findByIdRestaurante(id));
 		
 		return "redirect:/restaurante/lista";
 		
@@ -122,13 +110,11 @@ public class RestauranteController {
 	@GetMapping("/{id}/listamenus")
 	public String menus(@PathVariable Integer id ,Model model) {
 		
-		Restaurante restaurante = restauranteDAO.findById(id).get();
-		
 		model.addAttribute("titulo","Lista de menús");
 		
 		model.addAttribute("restauranteId",id);
 		
-		model.addAttribute("menus", restaurante.getMenus());
+		model.addAttribute("menus", serviceDb.findByIdRestaurante(id).getMenus());
 		
 		return "/restaurante/listaMenus";
 		
@@ -140,8 +126,6 @@ public class RestauranteController {
 		Menu menu = new Menu();
 		
 		model.addAttribute("menu", menu);
-		
-		System.out.println(id);
 		
 		model.addAttribute("restauranteId", id);
 		
@@ -164,13 +148,13 @@ public class RestauranteController {
 			
 		}
 		
-		Restaurante restaurante = restauranteDAO.findById(id).get();
+		Restaurante restaurante = serviceDb.findByIdRestaurante(id);
 		
 		menu.setId(null);
 		
 		restaurante.addMenu(menu);
 		
-		restauranteDAO.save(restaurante);
+		serviceDb.saveRestaurante(restaurante);
 		
 		return "redirect:/restaurante/"+restaurante.getId()+"/listamenus";
 		
@@ -179,11 +163,9 @@ public class RestauranteController {
 	@GetMapping("/{id}/listaagregarmenuexistente")
 	public String agregarMenuExistente(@PathVariable Integer id, Model model) {
 		
-		Restaurante restaurante = restauranteDAO.findById(id).get();
+		List<Menu> menus = serviceDb.findAllMenu();
 		
-		List<Menu> menus = menuDAO.findAll();
-		
-		menus.removeAll(restaurante.getMenus());
+		menus.removeAll(serviceDb.findByIdRestaurante(id).getMenus());
 
 		model.addAttribute("titulo","Lista de menú agregables");
 		
@@ -198,13 +180,11 @@ public class RestauranteController {
 	@GetMapping("/{idRes}/agregarmenuexistente/{idMen}")
 	public String agregarMenuExistente(@PathVariable Integer idRes, @PathVariable Integer idMen) {
 		
-		Restaurante restaurante = restauranteDAO.findById(idRes).get();
+		Restaurante restaurante = serviceDb.findByIdRestaurante(idRes);
 		
-		Menu menu = menuDAO.findById(idMen).get();
+		restaurante.addMenu(serviceDb.findByIdMenu(idMen));
 		
-		restaurante.addMenu(menu);
-		
-		restauranteDAO.save(restaurante);
+		serviceDb.saveRestaurante(restaurante);
 		
 		return "redirect:/restaurante/"+restaurante.getId()+"/listamenus";
 		
@@ -213,11 +193,9 @@ public class RestauranteController {
 	@GetMapping("/{idRes}/editarmenu/{idMen}")
 	public String editarMenu(@PathVariable Integer idRes, @PathVariable Integer idMen,  Model model) {
 		
-		Menu menu = menuDAO.findById(idMen).get();
-		
 		model.addAttribute("restauranteId", idRes);
 		
-		model.addAttribute("menu", menu) ;
+		model.addAttribute("menu", serviceDb.findByIdMenu(idMen)) ;
 		
 		model.addAttribute("titulo","Editar menú");
 		
@@ -240,7 +218,7 @@ public class RestauranteController {
 		
 		model.addAttribute("restauranteId", idRes);
 		
-		menuDAO.save(menu);
+		serviceDb.saveMenu(menu);
 		
 		status.setComplete();
 		
@@ -252,13 +230,11 @@ public class RestauranteController {
 	@GetMapping("/{idRes}/eliminarmenu/{idMen}")
 	public String eliminarMenu(@PathVariable Integer idRes , @PathVariable Integer idMen ,Model model) {
 		
-		Restaurante restaurante = restauranteDAO.findById(idRes).get();
+		Restaurante restaurante = serviceDb.findByIdRestaurante(idRes);
 		
-		Menu menu = menuDAO.findById(idMen).get();
+		restaurante.deleteMenu(serviceDb.findByIdMenu(idMen));
 		
-		restaurante.deleteMenu(menu);
-		
-		restauranteDAO.save(restaurante);
+		serviceDb.saveRestaurante(restaurante);
 		
 		return "redirect:/restaurante/"+idRes+"/listamenus";
 		

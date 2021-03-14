@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import co.cristian.springboot.quileia.models.dao.IngredienteDAO;
-import co.cristian.springboot.quileia.models.dao.MenuDAO;
 import co.cristian.springboot.quileia.models.entity.Ingrediente;
 import co.cristian.springboot.quileia.models.entity.Menu;
-
+import co.cristian.springboot.quileia.models.services.IServiceDb;
 
 @Controller
 @SessionAttributes({ "menu", "ingrediente" })
@@ -27,28 +25,25 @@ import co.cristian.springboot.quileia.models.entity.Menu;
 public class MenuController {
 
 	@Autowired
-	private MenuDAO menuDAO;
-
-	@Autowired
-	private IngredienteDAO ingredienteDAO;
+	private IServiceDb serviceDb;
 
 	@GetMapping("/lista")
 	public String lista(Model model) {
-		
-		List<Menu> munusTipo1 = menuDAO.findBytipo(1);
-		
-		List<Menu> munusTipo2 = menuDAO.findBytipo(2);
 
-		List<Menu> munusTipo3 = menuDAO.findBytipo(3);
-		
-		List<Menu> munusTipo4 = menuDAO.findBytipo(4);
+		List<Menu> munusTipo1 = serviceDb.findBytipoMenu(1);
+
+		List<Menu> munusTipo2 = serviceDb.findBytipoMenu(2);
+
+		List<Menu> munusTipo3 = serviceDb.findBytipoMenu(3);
+
+		List<Menu> munusTipo4 = serviceDb.findBytipoMenu(4);
 
 		model.addAttribute("tipo1", munusTipo1);
-		
+
 		model.addAttribute("tipo2", munusTipo2);
-		
+
 		model.addAttribute("tipo3", munusTipo3);
-		
+
 		model.addAttribute("tipo4", munusTipo4);
 
 		model.addAttribute("titulo", "Lista de menús");
@@ -74,14 +69,14 @@ public class MenuController {
 	public String agregarmenu(@Valid Menu menu, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
-			
+
 			model.addAttribute("titulo", "Agregar menú (Campos incorrectos)");
 
 			return "/menu/agregar";
 
 		}
 
-		menuDAO.save(menu);
+		serviceDb.saveMenu(menu);
 
 		return "redirect:/menu/lista";
 
@@ -90,9 +85,7 @@ public class MenuController {
 	@GetMapping("/editar/{id}")
 	public String editarMenu(@PathVariable Integer id, Model model) {
 
-		Menu menu = menuDAO.findById(id).get();
-
-		model.addAttribute("menu", menu);
+		model.addAttribute("menu", serviceDb.findByIdMenu(id));
 
 		model.addAttribute("titulo", "Editar menú");
 
@@ -104,14 +97,14 @@ public class MenuController {
 	public String editarMenu(@Valid Menu menu, BindingResult result, Model model, SessionStatus status) {
 
 		if (result.hasErrors()) {
-			
+
 			model.addAttribute("titulo", "Editar menú (Campos incorrectos)");
 
 			return "/menu/editar";
 
 		}
 
-		menuDAO.save(menu);
+		serviceDb.saveMenu(menu);
 
 		status.setComplete();
 
@@ -122,7 +115,7 @@ public class MenuController {
 	@GetMapping("/eliminar/{id}")
 	public String eliminarMenu(@PathVariable Integer id, Model model) {
 
-		Menu menu = menuDAO.findById(id).get();
+		Menu menu = serviceDb.findByIdMenu(id);
 
 		menu.getRestaurantes().forEach(r -> {
 
@@ -130,7 +123,7 @@ public class MenuController {
 
 		});
 
-		menuDAO.delete(menu);
+		serviceDb.deleteMenu(menu);
 
 		return "redirect:/menu/lista";
 
@@ -139,13 +132,11 @@ public class MenuController {
 	@GetMapping("/{id}/listaingredientes")
 	public String listaIngredientes(@PathVariable Integer id, Model model) {
 
-		Menu menu = menuDAO.findById(id).get();
-
 		model.addAttribute("titulo", "Lista de ingredientes");
 
 		model.addAttribute("menuId", id);
 
-		model.addAttribute("ingredientes", menu.getIngredientes());
+		model.addAttribute("ingredientes", serviceDb.findByIdMenu(id).getIngredientes());
 
 		return "/menu/listaIngredientes";
 
@@ -170,7 +161,7 @@ public class MenuController {
 	public String agregarmenu(@PathVariable Integer id, @Valid Ingrediente ingrediente, BindingResult result,
 			Model model) {
 
-		Menu menu = menuDAO.findById(id).get();
+		Menu menu = serviceDb.findByIdMenu(id);
 
 		model.addAttribute("menuId", id);
 
@@ -189,12 +180,12 @@ public class MenuController {
 			return "/menu/agregarIngrediente";
 
 		}
-		
+
 		ingrediente.setId(null);
 
 		menu.addIngrediente(ingrediente);
 
-		menuDAO.save(menu);
+		serviceDb.saveMenu(menu);
 
 		return "redirect:/menu/" + menu.getId() + "/listaingredientes";
 
@@ -203,9 +194,7 @@ public class MenuController {
 	@GetMapping("/{idMen}/editaringrediente/{idIng}")
 	public String editarIngrediente(@PathVariable Integer idMen, @PathVariable Integer idIng, Model model) {
 
-		Ingrediente ingrediente = ingredienteDAO.findById(idIng).get();
-
-		model.addAttribute("ingrediente", ingrediente);
+		model.addAttribute("ingrediente", serviceDb.findByIdIngrediente(idIng));
 
 		model.addAttribute("idMenu", idMen);
 
@@ -220,17 +209,17 @@ public class MenuController {
 			Model model, SessionStatus status) {
 
 		model.addAttribute("idMenu", idMen);
-		
-		Menu menu = menuDAO.findById(idMen).get();
+
+		Menu menu = serviceDb.findByIdMenu(idMen);
 
 		if (result.hasErrors()) {
-			
+
 			model.addAttribute("titulo", "Editar Ingrediente (Campos incorectos)");
 
 			return "/menu/editarIngrediente";
 
 		}
-		
+
 		if (!menu.aceptable(menu, ingrediente)) {
 
 			model.addAttribute("titulo", "Editar Ingrediente (El limite de calorías fue superado)");
@@ -239,7 +228,7 @@ public class MenuController {
 
 		}
 
-		ingredienteDAO.save(ingrediente);
+		serviceDb.saveIngrediente(ingrediente);
 
 		status.setComplete();
 
@@ -250,22 +239,14 @@ public class MenuController {
 	@GetMapping("/{idMen}/eliminaringrediente/{idIng}")
 	public String eliminarMenu(@PathVariable Integer idMen, @PathVariable Integer idIng, Model model) {
 
-		Ingrediente ingrediente = ingredienteDAO.findById(idIng).get();
+		Menu menu = serviceDb.findByIdMenu(idMen);
 
-		Menu menu = menuDAO.findById(idMen).get();
+		menu.deleteIngrediente(serviceDb.findByIdIngrediente(idIng));
 
-		menu.deleteIngrediente(ingrediente);
-		
-		menuDAO.save(menu);
+		serviceDb.saveMenu(menu);
 
 		return "redirect:/menu/" + idMen + "/listaingredientes";
 
 	}
-	
-	public List<Menu> extracted(List<Menu> menus, Integer tipo) {
-		
-		menus.removeIf(m -> (m.getTipo() != tipo));
-		
-		return menus;
-	}
+
 }

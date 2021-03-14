@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+	<footer th:fragment="footer" class="container">
+		<hr>
+		<img alt="" th:src="@{/images/lazarod.png}">
+		<p>
+			Powered by <a href="https://projects.spring.io/spring-boot/">Spring
+				Boot</a> y <a href="htttp://www.thymeleaf.org">Thymeleaf</a>
+		</p>
+		<p>
+			Este proyecto fue desarrollado en IDE Eclipse + Spring plugins (SST
+			Spring Tool).<br> &copy; Lazarod 2021, Inc. Todos los derechos
+			reservados. Terminos de uso y provacidad.<br>
+		</p>
+	</footer>
+</body>
+</html>

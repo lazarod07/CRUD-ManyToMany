@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title th:text="${titulo}"></title>
-<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-<link th:href="@{/css/style.css}" rel="stylesheet">
-</head>
+<head th:replace="/layout/layout :: head"></head>
 <body>
 	<h3 th:text="${titulo}"></h3>
 	<div class="container">
@@ -20,5 +15,6 @@
 				data-bs-toggle="button"></a>
 		</div>
 	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

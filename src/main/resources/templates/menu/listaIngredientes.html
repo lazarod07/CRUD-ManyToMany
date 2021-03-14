@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title th:text="${titulo}"></title>
-<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-<link th:href="@{/css/style.css}" rel="stylesheet">
-</head>
+<head th:replace="/layout/layout :: head"></head>
 <body>
 	<h3 th:text="${titulo}"></h3>
 	<a href="/index" th:text="Inicio" class="btn btn-secondary"
@@ -37,5 +32,6 @@
 			class="btn btn-primary" role="button" data-bs-toggle="button">Agregar
 			ingrediente</a>
 	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

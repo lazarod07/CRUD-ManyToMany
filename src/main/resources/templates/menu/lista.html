@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title th:text="${titulo}"></title>
-<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-<link th:href="@{/css/style.css}" rel="stylesheet">
-</head>
+<head th:replace="/layout/layout :: head"></head>
 <body>
 	<h3 th:text="${titulo}"></h3>
 	<a href="/index"
@@ -126,5 +121,6 @@
 		<br> <a th:href="@{/menu/agregar}" class="btn btn-primary col-sm-2" role="button"
 			data-bs-toggle="button">Agregar menu</a>
 	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>
